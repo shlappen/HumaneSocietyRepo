@@ -174,19 +174,8 @@ namespace HumaneSociety
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
-            Animal animalFromDb = db.Animals.Where(a => a.AnimalId == animal.AnimalId).FirstOrDefault();
-
-            animalFromDb.CategoryId = animal.CategoryId;
-            animalFromDb.Name = animal.Name;
-            animalFromDb.Age = animal.Age;
-            animalFromDb.Demeanor = animal.Demeanor;
-            animalFromDb.KidFriendly = animal.KidFriendly;
-            animalFromDb.PetFriendly = animal.PetFriendly;
-            animalFromDb.Weight = animal.Weight;
-            animalFromDb.DietPlanId = animal.DietPlanId;
-
+            db.Animals.InsertOnSubmit(animal);
             db.SubmitChanges();
-            throw new NotImplementedException();
         }
 
         internal static Animal GetAnimalByID(int id)
@@ -196,12 +185,14 @@ namespace HumaneSociety
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
-        {            
+        {
             throw new NotImplementedException();
         }
 
         internal static void RemoveAnimal(Animal animal)
         {
+            var deleteAnimalDetails = db.Animals.Where(a => a.AnimalId == animal.AnimalId).FirstOrDefault();
+            db.Animals.DeleteOnSubmit(deleteAnimalDetails);
             throw new NotImplementedException();
         }
         
@@ -214,9 +205,8 @@ namespace HumaneSociety
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
-            var categoryId = db.Categories.Where(c => c.Name == categoryName).Select(c => c.CategoryId);
-            return Convert.ToInt32(categoryId);
-            throw new NotImplementedException();
+            var categoryId = db.Categories.Where(c => c.Name == categoryName).Select(c => c.CategoryId).SingleOrDefault();
+            return categoryId;
         }
         
         internal static Room GetRoom(int animalId)
@@ -227,7 +217,7 @@ namespace HumaneSociety
         
         internal static int GetDietPlanId(string dietPlanName)
         {
-            var dietPlanId = db.DietPlans.Where(n => n.Name == dietPlanName).Select(n => n.DietPlanId);
+            var dietPlanId = db.DietPlans.Where(n => n.Name == dietPlanName).Select(n => n.DietPlanId).FirstOrDefault();
             return Convert.ToInt32(dietPlanId);
         }
 
@@ -239,6 +229,7 @@ namespace HumaneSociety
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
+
             throw new NotImplementedException();
         }
 
@@ -249,6 +240,7 @@ namespace HumaneSociety
 
         internal static void RemoveAdoption(int animalId, int clientId)
         {
+
             throw new NotImplementedException();
         }
 
