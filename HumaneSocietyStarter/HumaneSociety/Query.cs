@@ -174,6 +174,7 @@ namespace HumaneSociety
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
+
             throw new NotImplementedException();
         }
 
@@ -201,16 +202,22 @@ namespace HumaneSociety
         // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
+            var categoryId = db.Categories.Where(c => c.Name == categoryName).Select(c => c.CategoryId);
+            return Convert.ToInt32(categoryId);
             throw new NotImplementedException();
         }
         
         internal static Room GetRoom(int animalId)
         {
+            var roomFromDb = db.Rooms.Where(n => n.AnimalId == animalId).Select(n => n.RoomId);
+            return roomFromDb;
             throw new NotImplementedException();
         }
         
         internal static int GetDietPlanId(string dietPlanName)
         {
+            var dietPlanId = db.DietPlans.Where(n => n.Name == dietPlanName).Select(n => n.DietPlanId);
+            return Convert.ToInt32(dietPlanId);
             throw new NotImplementedException();
         }
 
