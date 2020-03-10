@@ -191,9 +191,8 @@ namespace HumaneSociety
 
         internal static void RemoveAnimal(Animal animal)
         {
-            var deleteAnimalDetails = db.Animals.Where(a => a.AnimalId == animal.AnimalId).FirstOrDefault();
-            db.Animals.DeleteOnSubmit(deleteAnimalDetails);
-            throw new NotImplementedException();
+            db.Animals.DeleteOnSubmit(animal);
+            db.SubmitChanges();
         }
         
         // TODO: Animal Multi-Trait Search
@@ -224,6 +223,7 @@ namespace HumaneSociety
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
+
             throw new NotImplementedException();
         }
 
