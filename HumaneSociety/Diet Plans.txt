@@ -1,0 +1,7 @@
+INSERT INTO DietPlans (1, 'Raw', 'Chicken', 1);
+INSERT INTO DietPlans (2, 'Grain Free', 'Beef', 1)
+INSERT INTO DietPlans (3, 'Small Breed', 'Salmon', 1)
+INSERT INTO DietPlans (4, 'Large Breed', 'Peanut Butter', 1)
+INSERT INTO DietPlans (5, 'Senior Breed', 'Sweet Potato', 1);
+
+Dog 1
