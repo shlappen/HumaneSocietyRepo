@@ -180,7 +180,8 @@ namespace HumaneSociety
 
         internal static Animal GetAnimalByID(int id)
         {
-            throw new NotImplementedException();
+            Animal animal = db.Animals.Where(n => n.AnimalId == id).FirstOrDefault();
+            return animal;
         }
 
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
@@ -209,16 +210,14 @@ namespace HumaneSociety
         
         internal static Room GetRoom(int animalId)
         {
-            var roomFromDb = db.Rooms.Where(n => n.AnimalId == animalId).Select(n => n.RoomId);
+            Room roomFromDb = db.Rooms.Where(n => n.AnimalId == animalId).FirstOrDefault();
             return roomFromDb;
-            throw new NotImplementedException();
         }
         
         internal static int GetDietPlanId(string dietPlanName)
         {
             var dietPlanId = db.DietPlans.Where(n => n.Name == dietPlanName).Select(n => n.DietPlanId);
             return Convert.ToInt32(dietPlanId);
-            throw new NotImplementedException();
         }
 
         // TODO: Adoption CRUD Operations
