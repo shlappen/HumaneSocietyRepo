@@ -179,7 +179,6 @@ namespace HumaneSociety
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
-            //result = (i % 5 == 0 && i % 3 == 0) ? "Fizzbuzz" : (i % 5 == 0) ? "Fizz" : (i % 3 == 0) ? "buzz" : i.ToString();
             if (crudOperation == "create")
             {
                 db.Employees.InsertOnSubmit(employee);
@@ -191,7 +190,11 @@ namespace HumaneSociety
             }
             else if (crudOperation == "update")
             {
-                employee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).FirstOrDefault();
+                Employee employeeFromDb = null;
+                employeeFromDb = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single();
+                employeeFromDb.FirstName = employee.FirstName;
+                employeeFromDb.LastName = employee.LastName;
+                employeeFromDb.Email = employee.Email;
                 db.SubmitChanges();
             }
             else if(crudOperation == "delete")
@@ -230,7 +233,8 @@ namespace HumaneSociety
         //TODO
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
-            throw new NotImplementedException();
+            Animal animalFromDb = db.Animals.Where(a => a.AnimalId == animalId).FirstOrDefault();
+
         }
 
         internal static void RemoveAnimal(Animal animal)
