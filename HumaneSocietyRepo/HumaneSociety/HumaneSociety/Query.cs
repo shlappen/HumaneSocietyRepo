@@ -21,10 +21,7 @@ namespace HumaneSociety
 
             return allStates;
         }
-        
-
-
-        //////////////READ
+            
         internal static Client GetClient(string userName, string password)
         {
             Client client = db.Clients.Where(c => c.UserName == userName && c.Password == password).Single();
@@ -39,8 +36,6 @@ namespace HumaneSociety
             return allClients;
         }
 
-
-        /////////////CREATE
         internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int stateId)
         {
             Client newClient = new Client();
@@ -76,8 +71,6 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
-
-        ///////////////UPDATE
         internal static void UpdateClient(Client clientWithUpdates)
         {
             // find corresponding Client from Db
@@ -139,8 +132,6 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
-
-
         internal static Employee RetrieveEmployeeUser(string email, int employeeNumber)
         {
             Employee employeeFromDb = db.Employees.Where(e => e.Email == email && e.EmployeeNumber == employeeNumber).FirstOrDefault();
@@ -170,44 +161,15 @@ namespace HumaneSociety
         }
 
 
-
-
-
-
         //// TODO Items: ////
         
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
-            if (crudOperation == "create")
-            {
-                db.Employees.InsertOnSubmit(employee);
-                db.SubmitChanges();
-            }
-            else if (crudOperation == "read")
-            {
-                UserInterface.DisplayEmployeeInfo(employee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single());
-            }
-            else if (crudOperation == "update")
-            {
-                Employee employeeFromDb = null;
-                employeeFromDb = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single();
-                employeeFromDb.FirstName = employee.FirstName;
-                employeeFromDb.LastName = employee.LastName;
-                employeeFromDb.Email = employee.Email;
-                db.SubmitChanges();
-            }
-            else if(crudOperation == "delete")
-            {
-                Employee employeeFromDb = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).Single();
-                db.Employees.DeleteOnSubmit(employeeFromDb);
-                db.SubmitChanges();
-            }
+
+
+            throw new NotImplementedException();
         }
-
-
-
-
 
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
@@ -215,26 +177,16 @@ namespace HumaneSociety
             db.Animals.InsertOnSubmit(animal);
             db.SubmitChanges();
         }
-        
+
         internal static Animal GetAnimalByID(int id)
         {
-            Animal animalFromDb = db.Animals.Where(a => a.AnimalId == id).FirstOrDefault();
-
-            if (animalFromDb == null)
-            {
-                throw new NullReferenceException();
-            }
-            else
-            {
-                return animalFromDb;
-            }
-
+            Animal animal = db.Animals.Where(n => n.AnimalId == id).FirstOrDefault();
+            return animal;
         }
-        //TODO
+
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
-            Animal animalFromDb = db.Animals.Where(a => a.AnimalId == animalId).FirstOrDefault();
-
+            throw new NotImplementedException();
         }
 
         internal static void RemoveAnimal(Animal animal)
@@ -243,17 +195,13 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
         
-
-
-
-
-
-        // TODO Animal Multi-Trait Search
+        // TODO: Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
             throw new NotImplementedException();
         }
          
+        // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
             var categoryId = db.Categories.Where(c => c.Name == categoryName).Select(c => c.CategoryId).SingleOrDefault();
@@ -272,24 +220,11 @@ namespace HumaneSociety
             return Convert.ToInt32(dietPlanId);
         }
 
-
-
-
-
-
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-            Adoption adoption = null;
 
-            adoption.ClientId = client.ClientId;
-            adoption.AnimalId = animal.AnimalId;
-            adoption.ApprovalStatus = "Pending";
-            adoption.AdoptionFee = 75;
-            adoption.PaymentCollected = false;
-
-
-            db.SubmitChanges();
+            throw new NotImplementedException();
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
@@ -300,34 +235,13 @@ namespace HumaneSociety
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
         {
-            Adoption updatedAdoption = null;
-            //find animalID
-            try
-            {
-                updatedAdoption = db.Adoptions.Where(a => a.AnimalId == adoption.AnimalId).Single();
-            }
-            catch (InvalidOperationException e)
-            {
-                Console.WriteLine("Did not find animal that matched.");
-                Console.WriteLine("No update(s) have been made.");
-                return;
-            }
-
-            updatedAdoption.AnimalId = adoption.AnimalId; 
-            updatedAdoption.ClientId = adoption.ClientId;
-            updatedAdoption.ApprovalStatus = "Adopted";
-            updatedAdoption.AdoptionFee = 0;
-            updatedAdoption.PaymentCollected = isAdopted;
-
-            db.SubmitChanges();
+            throw new NotImplementedException();
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
         {
-            //Need to use clientID?
-            Adoption animal = db.Adoptions.Where(a => a.AnimalId == animalId).Single();
-            db.Adoptions.DeleteOnSubmit(animal);
-            db.SubmitChanges();
+
+            throw new NotImplementedException();
         }
 
         // TODO: Shots Stuff
@@ -338,23 +252,7 @@ namespace HumaneSociety
 
         internal static void UpdateShot(string shotName, Animal animal)
         {
-            //find animal getting shot
-            AnimalShot updatingShot = null;
-            Shot shot = null;
-            try
-            {
-                updatingShot = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).Single();
-            }
-            catch (InvalidOperationException e)
-            {
-                Console.WriteLine("Did not find matching AnimalID to the one entered.");
-                return;
-            }
-            shot.Name = shotName;
-            updatingShot.AnimalId = animal.AnimalId;
-            updatingShot.ShotId = shot.ShotId;
-
-            db.SubmitChanges();
+            throw new NotImplementedException();
         }
     }
 }
