@@ -299,6 +299,7 @@ namespace HumaneSociety
                 }
             }
             return animals;
+
         }
          
         internal static int GetCategoryId(string categoryName)
@@ -335,7 +336,7 @@ namespace HumaneSociety
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-            Adoption adoption = null;
+            Adoption adoption = new Adoption();
 
             adoption.ClientId = client.ClientId;
             adoption.AnimalId = animal.AnimalId;
@@ -343,6 +344,10 @@ namespace HumaneSociety
             adoption.AdoptionFee = 75;
             adoption.PaymentCollected = false;
 
+<<<<<<< HEAD
+=======
+            db.Adoptions.InsertOnSubmit(adoption);
+>>>>>>> ca2e4db6f8af7e759f44eb54f96cc97a1cf431a0
             db.SubmitChanges();
         }
 
@@ -387,17 +392,17 @@ namespace HumaneSociety
         // TODO: Shots Stuff
         internal static IQueryable<AnimalShot> GetShots(Animal animal)
         {
-            throw new NotImplementedException();
+            return db.AnimalShots;
         }
 
         internal static void UpdateShot(string shotName, Animal animal)
         {
             //find animal getting shot
-            AnimalShot updatingShot = null;
+            AnimalShot updatedShot = null;
             Shot shot = null;
             try
             {
-                updatingShot = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).Single();
+                updatedShot = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).Single();
             }
             catch (InvalidOperationException e)
             {
@@ -405,8 +410,8 @@ namespace HumaneSociety
                 return;
             }
             shot.Name = shotName;
-            updatingShot.AnimalId = animal.AnimalId;
-            updatingShot.ShotId = shot.ShotId;
+            updatedShot.AnimalId = animal.AnimalId;
+            updatedShot.ShotId = shot.ShotId;
 
             db.SubmitChanges();
         }
