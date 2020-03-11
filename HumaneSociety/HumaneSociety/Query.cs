@@ -9,6 +9,7 @@ namespace HumaneSociety
     public static class Query
     {        
         static HumaneSocietyDataContext db;
+        public delegate Animal ToAnimalFunction(string s);
 
         static Query()
         {
@@ -234,12 +235,16 @@ namespace HumaneSociety
         {
             Animal animalFromDb = null;
             animalFromDb = db.Animals.Where(a => a.AnimalId == animalId).FirstOrDefault();
+            //switch case for groups
             animalFromDb.CategoryId = Convert.ToInt32(updates[1]);
+
             animalFromDb.Name = updates[2];
             animalFromDb.Age = Convert.ToInt32(updates[3]);
             animalFromDb.Demeanor = updates[4];
+
             animalFromDb.KidFriendly = Convert.ToBoolean(updates[5]);
             animalFromDb.PetFriendly = Convert.ToBoolean(updates[6]);
+
             animalFromDb.Weight = Convert.ToInt32(updates[7]);
             animalFromDb.AnimalId = Convert.ToInt32(updates[8]);
             db.SubmitChanges();
@@ -257,12 +262,43 @@ namespace HumaneSociety
 
 
         // TODO Animal Multi-Trait Search
-        internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
+        internal static List<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
-            IQueryable<Animal> animalFromDb = null;
-            
+            List<Animal> animals = db.Animals.ToList();
 
-            return animalFromDb;
+            foreach(KeyValuePair<int,string> update in updates)
+            {
+                switch (update.Key)
+                {
+                    case 1:
+                        animals = animals.Where(s => s.CategoryId == Convert.ToInt32(update.Value)).ToList();
+                        break;
+                    case 2:
+                        animals = animals.Where(s => s.Name == (update.Value)).ToList();
+                        break;
+                    case 3:
+                        animals = animals.Where(s => s.Age == Convert.ToInt32(update.Value)).ToList();
+                        break;
+                    case 4:
+                        animals = animals.Where(s => s.Demeanor == (update.Value)).ToList();
+                        break;
+                    case 5:
+                        animals = animals.Where(s => s.KidFriendly == Convert.ToBoolean(update.Value)).ToList();
+                        break;
+                    case 6:
+                        animals = animals.Where(s => s.PetFriendly == Convert.ToBoolean(update.Value)).ToList();
+                        break;
+                    case 7:
+                        animals = animals.Where(s => s.Weight == Convert.ToInt32(update.Value)).ToList();
+                        break;
+                    case 8:
+                        animals = animals.Where(s => s.AnimalId == Convert.ToInt32(update.Value)).ToList();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return animals;
         }
          
         internal static int GetCategoryId(string categoryName)
