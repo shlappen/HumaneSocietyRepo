@@ -296,8 +296,26 @@ namespace HumaneSociety
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
         {
+            Adoption updatedAdoption = null;
+            //find animalID
+            try
+            {
+                updatedAdoption = db.Adoptions.Where(a => a.AnimalId == adoption.AnimalId).Single();
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine("Did not find animal that matched.");
+                Console.WriteLine("No update(s) have been made.");
+                return;
+            }
 
-            throw new NotImplementedException();
+            updatedAdoption.AnimalId = adoption.AnimalId; 
+            updatedAdoption.ClientId = adoption.ClientId;
+            updatedAdoption.ApprovalStatus = "Adopted";
+            updatedAdoption.AdoptionFee = 0;
+            updatedAdoption.PaymentCollected = isAdopted;
+
+            db.SubmitChanges();
         }
 
         internal static void RemoveAdoption(int animalId, int clientId)
@@ -316,7 +334,23 @@ namespace HumaneSociety
 
         internal static void UpdateShot(string shotName, Animal animal)
         {
-            throw new NotImplementedException();
+            //find animal getting shot
+            AnimalShot updatingShot = null;
+            Shot shot = null;
+            try
+            {
+                updatingShot = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).Single();
+            }
+            catch (InvalidOperationException e)
+            {
+                Console.WriteLine("Did not find matching AnimalID to the one entered.");
+                return;
+            }
+            shot.Name = shotName;
+            updatingShot.AnimalId = animal.AnimalId;
+            updatingShot.ShotId = shot.ShotId;
+
+            db.SubmitChanges();
         }
     }
 }
