@@ -259,8 +259,10 @@ namespace HumaneSociety
         // TODO Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
+            IQueryable<Animal> animalFromDb = null;
+            
 
-            throw new NotImplementedException();
+            return animalFromDb;
         }
          
         internal static int GetCategoryId(string categoryName)
