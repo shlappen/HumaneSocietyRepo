@@ -284,14 +284,12 @@ namespace HumaneSociety
             adoption.AdoptionFee = 75;
             adoption.PaymentCollected = false;
 
-
             db.SubmitChanges();
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
-
-            throw new NotImplementedException();
+            return db.Adoptions;
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
