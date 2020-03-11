@@ -209,7 +209,7 @@ namespace HumaneSociety
 
 
 
-        // TODO: Animal CRUD Operations
+        // Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
         {
             db.Animals.InsertOnSubmit(animal);
@@ -230,11 +230,19 @@ namespace HumaneSociety
             }
 
         }
-        //TODO
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
-            Animal animalFromDb = db.Animals.Where(a => a.AnimalId == animalId).FirstOrDefault();
-
+            Animal animalFromDb = null;
+            animalFromDb = db.Animals.Where(a => a.AnimalId == animalId).FirstOrDefault();
+            animalFromDb.CategoryId = Convert.ToInt32(updates[1]);
+            animalFromDb.Name = updates[2];
+            animalFromDb.Age = Convert.ToInt32(updates[3]);
+            animalFromDb.Demeanor = updates[4];
+            animalFromDb.KidFriendly = Convert.ToBoolean(updates[5]);
+            animalFromDb.PetFriendly = Convert.ToBoolean(updates[6]);
+            animalFromDb.Weight = Convert.ToInt32(updates[7]);
+            animalFromDb.AnimalId = Convert.ToInt32(updates[8]);
+            db.SubmitChanges();
         }
 
         internal static void RemoveAnimal(Animal animal)
@@ -251,6 +259,7 @@ namespace HumaneSociety
         // TODO Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
+
             throw new NotImplementedException();
         }
          
@@ -288,12 +297,14 @@ namespace HumaneSociety
             adoption.AdoptionFee = 75;
             adoption.PaymentCollected = false;
 
+
             db.SubmitChanges();
         }
 
         internal static IQueryable<Adoption> GetPendingAdoptions()
         {
-            return db.Adoptions;
+
+            throw new NotImplementedException();
         }
 
         internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
