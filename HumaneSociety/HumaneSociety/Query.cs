@@ -251,6 +251,12 @@ namespace HumaneSociety
         // TODO Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
+            var animals = db.Animals;
+
+            foreach (KeyValuePair<int, string> update in updates)
+            {
+
+            }
             throw new NotImplementedException();
         }
          
@@ -280,7 +286,7 @@ namespace HumaneSociety
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)
         {
-            Adoption adoption = null;
+            Adoption adoption = new Adoption();
 
             adoption.ClientId = client.ClientId;
             adoption.AnimalId = animal.AnimalId;
@@ -288,6 +294,7 @@ namespace HumaneSociety
             adoption.AdoptionFee = 75;
             adoption.PaymentCollected = false;
 
+            db.Adoptions.InsertOnSubmit(adoption);
             db.SubmitChanges();
         }
 
@@ -331,17 +338,17 @@ namespace HumaneSociety
         // TODO: Shots Stuff
         internal static IQueryable<AnimalShot> GetShots(Animal animal)
         {
-            throw new NotImplementedException();
+            return db.AnimalShots;
         }
 
         internal static void UpdateShot(string shotName, Animal animal)
         {
             //find animal getting shot
-            AnimalShot updatingShot = null;
+            AnimalShot updatedShot = null;
             Shot shot = null;
             try
             {
-                updatingShot = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).Single();
+                updatedShot = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).Single();
             }
             catch (InvalidOperationException e)
             {
@@ -349,8 +356,8 @@ namespace HumaneSociety
                 return;
             }
             shot.Name = shotName;
-            updatingShot.AnimalId = animal.AnimalId;
-            updatingShot.ShotId = shot.ShotId;
+            updatedShot.AnimalId = animal.AnimalId;
+            updatedShot.ShotId = shot.ShotId;
 
             db.SubmitChanges();
         }
