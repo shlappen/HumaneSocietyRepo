@@ -21,7 +21,10 @@ namespace HumaneSociety
 
             return allStates;
         }
-            
+        
+
+
+        //////////////READ
         internal static Client GetClient(string userName, string password)
         {
             Client client = db.Clients.Where(c => c.UserName == userName && c.Password == password).Single();
@@ -36,6 +39,8 @@ namespace HumaneSociety
             return allClients;
         }
 
+
+        /////////////CREATE
         internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int stateId)
         {
             Client newClient = new Client();
@@ -71,6 +76,8 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
+
+        ///////////////UPDATE
         internal static void UpdateClient(Client clientWithUpdates)
         {
             // find corresponding Client from Db
@@ -132,6 +139,8 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
+
+
         internal static Employee RetrieveEmployeeUser(string email, int employeeNumber)
         {
             Employee employeeFromDb = db.Employees.Where(e => e.Email == email && e.EmployeeNumber == employeeNumber).FirstOrDefault();
@@ -161,15 +170,41 @@ namespace HumaneSociety
         }
 
 
+
+
+
+
         //// TODO Items: ////
         
         // TODO: Allow any of the CRUD operations to occur here
         internal static void RunEmployeeQueries(Employee employee, string crudOperation)
         {
-
-
-            throw new NotImplementedException();
+            //result = (i % 5 == 0 && i % 3 == 0) ? "Fizzbuzz" : (i % 5 == 0) ? "Fizz" : (i % 3 == 0) ? "buzz" : i.ToString();
+            if (crudOperation == "create")
+            {
+                db.Employees.InsertOnSubmit(employee);
+                db.SubmitChanges();
+            }
+            else if (crudOperation == "read")
+            {
+                UserInterface.DisplayEmployeeInfo(employee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).Single());
+            }
+            else if (crudOperation == "update")
+            {
+                employee = db.Employees.Where(e => e.EmployeeNumber == employee.EmployeeNumber).FirstOrDefault();
+                db.SubmitChanges();
+            }
+            else if(crudOperation == "delete")
+            {
+                Employee employeeFromDb = db.Employees.Where(e => e.EmployeeId == employee.EmployeeId).Single();
+                db.Employees.DeleteOnSubmit(employeeFromDb);
+                db.SubmitChanges();
+            }
         }
+
+
+
+
 
         // TODO: Animal CRUD Operations
         internal static void AddAnimal(Animal animal)
@@ -177,13 +212,22 @@ namespace HumaneSociety
             db.Animals.InsertOnSubmit(animal);
             db.SubmitChanges();
         }
-
+        
         internal static Animal GetAnimalByID(int id)
         {
-            Animal animal = db.Animals.Where(n => n.AnimalId == id).FirstOrDefault();
-            return animal;
-        }
+            Animal animalFromDb = db.Animals.Where(a => a.AnimalId == id).FirstOrDefault();
 
+            if (animalFromDb == null)
+            {
+                throw new NullReferenceException();
+            }
+            else
+            {
+                return animalFromDb;
+            }
+
+        }
+        //TODO
         internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
         {
             throw new NotImplementedException();
@@ -195,13 +239,17 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
         
-        // TODO: Animal Multi-Trait Search
+
+
+
+
+
+        // TODO Animal Multi-Trait Search
         internal static IQueryable<Animal> SearchForAnimalsByMultipleTraits(Dictionary<int, string> updates) // parameter(s)?
         {
             throw new NotImplementedException();
         }
          
-        // TODO: Misc Animal Things
         internal static int GetCategoryId(string categoryName)
         {
             var categoryId = db.Categories.Where(c => c.Name == categoryName).Select(c => c.CategoryId).SingleOrDefault();
@@ -219,6 +267,11 @@ namespace HumaneSociety
             var dietPlanId = db.DietPlans.Where(n => n.Name == dietPlanName).Select(n => n.DietPlanId).FirstOrDefault();
             return Convert.ToInt32(dietPlanId);
         }
+
+
+
+
+
 
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client)

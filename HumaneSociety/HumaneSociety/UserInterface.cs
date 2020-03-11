@@ -8,6 +8,7 @@ namespace HumaneSociety
 {
     public static class UserInterface
     {
+
         public static void DisplayUserOptions(List<string> options)
         {
             foreach(string option in options)
@@ -136,6 +137,13 @@ namespace HumaneSociety
             DisplayUserOptions(info);
             Console.ReadLine();
 
+        }
+
+        public static void DisplayEmployeeInfo(Employee employee)
+        {
+            List<string> info = new List<string>() { "ID: " + employee.EmployeeId, "First name: " + employee.FirstName, "Last name: " + employee.LastName, "Email: " + employee.Email, "Employee number: " + employee.EmployeeNumber};
+            DisplayUserOptions(info);
+            Console.ReadLine();
         }
 
         private static string BoolToYesNo(bool? input)
