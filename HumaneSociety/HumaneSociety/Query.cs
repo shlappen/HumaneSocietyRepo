@@ -223,6 +223,7 @@ namespace HumaneSociety
 
             if (animalFromDb == null)
             {
+                Console.WriteLine("No animal found, please try again.");
                 throw new NullReferenceException();
             }
             else
@@ -344,10 +345,8 @@ namespace HumaneSociety
             adoption.AdoptionFee = 75;
             adoption.PaymentCollected = false;
 
-<<<<<<< HEAD
-=======
+
             db.Adoptions.InsertOnSubmit(adoption);
->>>>>>> ca2e4db6f8af7e759f44eb54f96cc97a1cf431a0
             db.SubmitChanges();
         }
 
