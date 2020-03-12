@@ -231,7 +231,7 @@ namespace HumaneSociety
             }
 
         }
-        internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates)
+        internal static void UpdateAnimal(int animalId, Dictionary<int, string> updates) 
         {
             Animal animalFromDb = null;
             animalFromDb = db.Animals.Where(a => a.AnimalId == animalId).FirstOrDefault();
@@ -326,7 +326,7 @@ namespace HumaneSociety
 
 
         // TODO: Adoption CRUD Operations
-        internal static void Adopt(Animal animal, Client client)
+        internal static void Adopt(Animal animal, Client client) //WORKS!
         {
             Adoption adoption = new Adoption();
 
@@ -340,15 +340,14 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
-        internal static IQueryable<Adoption> GetPendingAdoptions()
+        internal static IQueryable<Adoption> GetPendingAdoptions() //NEED TO TEST
         {
-
-            throw new NotImplementedException();
+            return db.Adoptions;
         }
 
-        internal static void UpdateAdoption(bool isAdopted, Adoption adoption)
+        internal static void UpdateAdoption(bool isAdopted, Adoption adoption) //WORKS!
         {
-            Adoption updatedAdoption = null;
+            Adoption updatedAdoption = new Adoption();
             //find animalID
             try
             {
@@ -370,38 +369,44 @@ namespace HumaneSociety
             db.SubmitChanges();
         }
 
-        internal static void RemoveAdoption(int animalId, int clientId)
+        internal static void RemoveAdoption(int animalId, int clientId) //NEED TO TEST **Mike said it does not need to be called!
         {
             //Need to use clientID?
+
             Adoption animal = db.Adoptions.Where(a => a.AnimalId == animalId).Single();
             db.Adoptions.DeleteOnSubmit(animal);
             db.SubmitChanges();
         }
 
         // TODO: Shots Stuff
-        internal static IQueryable<AnimalShot> GetShots(Animal animal)
+        internal static IQueryable<AnimalShot> GetShots(Animal animal)//FIXED and WORKS!
         {
-            return db.AnimalShots;
+            var shots = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId);
+            return shots;
         }
 
-        internal static void UpdateShot(string shotName, Animal animal)
+        internal static void UpdateShot(string shotName, Animal animal)//EXCEPTION NEEDS TO BE HANDLE when SHOTID gets added/updated
         {
-            //find animal getting shot
-            AnimalShot updatedShot = null;
-            Shot shot = null;
+            Animal updatedAnimalShot = new Animal();
+            AnimalShot updatedShot = new AnimalShot();
+            Shot shot = new Shot();
+            
             try
             {
-                updatedShot = db.AnimalShots.Where(a => a.AnimalId == animal.AnimalId).Single();
+                updatedAnimalShot = db.Animals.Where(a => a.AnimalId == animal.AnimalId).Single();
             }
             catch (InvalidOperationException e)
             {
                 Console.WriteLine("Did not find matching AnimalID to the one entered.");
                 return;
             }
+
             shot.Name = shotName;
             updatedShot.AnimalId = animal.AnimalId;
             updatedShot.ShotId = shot.ShotId;
+            //updatedShot.DateReceived = 
 
+            db.AnimalShots.InsertOnSubmit(updatedShot);
             db.SubmitChanges();
         }
     }
