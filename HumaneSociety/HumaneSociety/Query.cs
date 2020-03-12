@@ -223,6 +223,7 @@ namespace HumaneSociety
 
             if (animalFromDb == null)
             {
+                Console.WriteLine("No animal found, please try again.");
                 throw new NullReferenceException();
             }
             else
@@ -310,8 +311,16 @@ namespace HumaneSociety
         
         internal static Room GetRoom(int animalId)
         {
-            Room roomFromDb = db.Rooms.Where(n => n.AnimalId == animalId).FirstOrDefault();
-            return roomFromDb;
+            Room roomFromDb = null;
+            roomFromDb = db.Rooms.Where(n => n.AnimalId == animalId).FirstOrDefault();
+            if(roomFromDb == null)
+            {
+                throw new NullReferenceException();
+            }
+            else
+            {
+                return roomFromDb;
+            }
         }
         
         internal static int GetDietPlanId(string dietPlanName)
@@ -324,7 +333,7 @@ namespace HumaneSociety
 
 
 
-
+        
         // TODO: Adoption CRUD Operations
         internal static void Adopt(Animal animal, Client client) //WORKS!
         {
@@ -335,6 +344,7 @@ namespace HumaneSociety
             adoption.ApprovalStatus = "Pending";
             adoption.AdoptionFee = 75;
             adoption.PaymentCollected = false;
+
 
             db.Adoptions.InsertOnSubmit(adoption);
             db.SubmitChanges();
